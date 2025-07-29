@@ -1,5 +1,5 @@
 from typing import Union
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -29,3 +29,10 @@ def read_root():
 @app.get('/items/{item_id}')
 def read_item(item_id: int, q: Union[str, None] = None, r: Union[str, None] = None):
     return {'item_id': item_id, 'q': q, 'r': r}
+
+
+# File upload endpoint
+@app.post('/uploadfile/')
+async def upload_file(file: UploadFile = File(...)):
+    print(f'Received file: {file.filename}')
+    return {'filename': file.filename}
