@@ -1,6 +1,7 @@
 from typing import Union
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from identify_image import identify_dish
 
 
 # Initialize FastAPI app
@@ -26,13 +27,23 @@ def read_root():
     return {'Hello': 'World'}
 
 
-@app.get('/items/{item_id}')
-def read_item(item_id: int, q: Union[str, None] = None, r: Union[str, None] = None):
-    return {'item_id': item_id, 'q': q, 'r': r}
+# Sample endpoint with path and query parameters
+# @app.get('/items/{item_id}')
+# def read_item(item_id: int, q: Union[str, None] = None, r: Union[str, None] = None):
+#     return {'item_id': item_id, 'q': q, 'r': r}
 
 
 # File upload endpoint
 @app.post('/uploadfile/')
 async def upload_file(file: UploadFile = File(...)):
     print(f'Received file: {file.filename}')
-    return {'filename': file.filename}
+
+    # Read the file content as bytes
+    image_contents = await file.read()
+    # print(type(image_contents))  # Uncomment to check the type of contents
+
+    # Pass the file to Gemini AI model for dish identification
+    dish_name = identify_dish(image_contents)
+    print(dish_name)  # Ensure dish is identified correctly
+
+    return {'filename': file.filename, 'dish_name': dish_name}
