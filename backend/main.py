@@ -2,6 +2,7 @@ from typing import Union
 from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from identify_image import identify_dish
+import os
 
 
 # Initialize FastAPI app
@@ -36,14 +37,29 @@ def read_root():
 # File upload endpoint
 @app.post('/uploadfile/')
 async def upload_file(file: UploadFile = File(...)):
+    """
+    Endpoint to upload an image file and identify the dish using Gemini AI.
+    Returns the identified dish name.
+    
+    If an error occurs, returns an error message.
+    """
+
     print(f'Received file: {file.filename}')
 
     # Read the file content as bytes
     image_contents = await file.read()
+    file_type = os.path.splitext(file.filename)[1][1:].lower()  # Get file extension and convert to lowercase
     # print(type(image_contents))  # Uncomment to check the type of contents
 
-    # Pass the file to Gemini AI model for dish identification
-    dish_name = identify_dish(image_contents)
-    print(dish_name)  # Ensure dish is identified correctly
+    try:
+        # Pass the file to Gemini AI model for dish identification
+        dish_name = identify_dish(image_contents, file_type)
+        print(dish_name)  # Ensure dish is identified correctly
 
-    return {'filename': file.filename, 'dish_name': dish_name}
+        return {'dish_name': dish_name}
+    except ValueError as e:
+        print(f'Error: {e}')
+        return {'error': str(e)}
+
+
+# TODO: Create an endpoint for handling URL uploads

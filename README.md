@@ -11,6 +11,7 @@ Simply upload an image of a dish and picChef will generate a detailed recipe.
 
 * **React** for the frontend
 * **Tailwind** for styling
+* **Motion** for UI animations
 * **FastAPI** for the backend
 * **Gemini** for image recognition
 
