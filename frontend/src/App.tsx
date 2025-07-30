@@ -84,32 +84,8 @@ function App() {
       <h1>picChef</h1>
       <h3 className="italic">From camera to kitchen.</h3>
 
-      {/* <div id="image-upload" className="m-4 p-8 bg-(--dark-grey-2) rounded-lg shadow-lg shadow-(color:--dark-grey-1) min-h-50">
-        <label htmlFor="image-upload" className="text-md text-stone-200">
-          <h2>Upload an image of your dish:</h2>
-        </label>
-
-        <br />
-
-        <input
-          type="file"
-          id="image-upload"
-          name="image-file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="text-md text-stone-500 file:bg-stone-200 file:p-2 file:rounded-md file:mr-4"/>
-
-        <br />
-        <br />
-
-        <button className="bg-blue-500 text-white font-semibold p-2 rounded-md hover:bg-blue-600
-          hover:cursor-pointer transition duration-300 ease-in-out">
-          Upload Image
-        </button>
-      </div> */}
-
-
-      <div className="bg-white p-8 rounded-lg shadow-xl max-w-md m-8 border border-gray-200">
+      {/* Main container for the dish uploader */}
+      <div className="bg-white p-8 rounded-lg shadow-lg shadow-indigo-400/40 max-w-md mt-8 mb-8 ml-4 mr-4 border border-gray-200">
         <h2 className="text-xl font-bold text-center text-gray-800 mb-6">Dish Uploader</h2>
 
         <div className="mb-6">
@@ -126,17 +102,31 @@ function App() {
                        file:mr-4 file:py-2 file:px-4
                        file:rounded-full file:border-0
                        file:text-sm file:font-semibold
-                       file:bg-blue-50 file:text-blue-700
-                       hover:file:bg-blue-100 cursor-pointer"
+                       file:bg-indigo-50 file:text-indigo-700
+                       hover:file:bg-indigo-100"
           />
         </div>
 
+        {/* Uncomment the following section to allow image URL uploads (NOT DONE YET) */}
+        {/* <div className="mb-6">
+          <label htmlFor="image-url-input" className="block text-gray-700 text-sm font-semibold mb-2">
+            Or upload an image from a URL:
+          </label>
+
+          <input
+            id="image-url-input"
+            type="text"
+            accept="text/plain"
+            className="rounded-lg bg-gray-50 text-gray-500 text-sm min-w-60 p-1 inset-shadow-gray-300 inset-shadow-sm"
+            />
+        </div> */}
+
         {/* Boolean logic to display file info */}
         {selectedFile && (
-          <div className="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200 text-blue-800 text-sm">
+          <div className="mb-6 p-4 bg-indigo-50 rounded-lg border border-indigo-200 text-indigo-800 text-sm">
             <p className="font-medium">Selected File:</p>
             <p className="truncate">{selectedFile.name}</p>
-            <p className="text-xs text-blue-600">Size: {(selectedFile.size / 1024).toFixed(2)} KB</p>
+            <p className="text-xs text-indigo-600">Size: {(selectedFile.size / 1024).toFixed(2)} KB</p>
           </div>
         )}
 
@@ -145,8 +135,8 @@ function App() {
           disabled={loading || !selectedFile}  // Disable button when loading or no file selected
           className={`w-full py-3 px-4 rounded-lg font-semibold text-white transition duration-300 ease-in-out
                      ${loading || !selectedFile
-                       ? 'bg-blue-300 cursor-not-allowed'
-                       : 'bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 shadow-md hover:shadow-lg'}`}
+                       ? 'bg-indigo-300 cursor-not-allowed'
+                       : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50 shadow-md hover:shadow-lg cursor-pointer'}`}
         >
           {loading ? 'Uploading...' : 'Upload Image'}
         </button>

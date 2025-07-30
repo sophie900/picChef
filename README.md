@@ -12,10 +12,13 @@ Simply upload an image of a dish and picChef will generate a detailed recipe.
 * **React** for the frontend
 * **Tailwind** for styling
 * **FastAPI** for the backend
+* **Gemini** for image recognition
 
 ### Features
-- [x] Image upload bin
+- [x] Upload image from file picker
+- [ ] Upload image via URL
 - [x] Gemini AI image identification
+- [ ] Dark/light theme switcher
 - [ ] Recipe generation
 - [ ] Saved recipes page
 - [ ] Authentication/login

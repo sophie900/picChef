@@ -6,8 +6,9 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: var(--dark-grey-2);
+  color: var(--color-zinc-200);
+  background-color: var(--color-zinc-800);
+  @apply bg-linear-to-t from-indigo-500/20 to-50% to-indigo-900/10;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -58,13 +59,11 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: var(--color-zinc-800);
+    background-color: var(--color-zinc-50);
+    @apply bg-linear-to-t from-indigo-800/20 to-50% to-indigo-400/10;
   }
   a:hover {
     color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
   }
 }
