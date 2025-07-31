@@ -57,8 +57,8 @@ async def upload_file(file: UploadFile = File(...)):
         print(dish_name)  # Ensure dish is identified correctly
 
         return {
-            'dish_name': dish_name,
-            'recipes': recipes
+            'dish_name': dish_name,  # String containing original dish name
+            'recipes': recipes  # List of dictionaries containing recipe info
         }
     except FileTypeError as e:  # Wrong file type, raise HTTP exception with error message
         print(f'Error: {e}')

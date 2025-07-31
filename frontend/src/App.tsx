@@ -11,7 +11,14 @@ function App() {
   const [imageData, setImageData] = useState<string>();  // Store image data for preview
   const [loading, setLoading] = useState<boolean>(false);  // Manage loading status during upload
   const [message, setMessage] = useState<string>('');  // Hold success/error message
-  const [recipeLinks, setRecipeLinks] = useState<Array<string>>([]);  // Store recipe links as list
+
+  // Define interface for RecipeObject
+  interface RecipeObject {
+    recipe_name: string;
+    recipe_link: string;
+    recipe_image: string;
+  }
+  const [recipes, setRecipes] = useState<Array<RecipeObject>>([]);  // Store recipe information
 
 
   // Handler for file input change
@@ -70,7 +77,7 @@ function App() {
 
         const response_json = await response.json();
         console.log(response_json);  // Log the response JSON
-        setRecipeLinks(response_json.recipes);
+        setRecipes(response_json.recipes);
       } else {
         const errorData: { detail?: string } = await response.json();  // Type annotation for error JSON response
         setMessage(`Upload failed: ${errorData.detail || 'Unknown error'}`);
@@ -228,13 +235,13 @@ function App() {
           <RecipeContainer
             
             contents={
-              recipeLinks.length == 0 ? "None yet! Upload an image to get started." : 
-              recipeLinks.map((link) => (  // Map each recipe link to a RecipeCard component
+              recipes.length == 0 ? "None yet! Upload an image to get started." : 
+              recipes.map((element, index) => (  // Map each recipe link to a RecipeCard component
                 <RecipeCard
-                  key={link}  // Use the link as a unique key
-                  title={'SAMPLE TITLE'}
-                  description={'SAMPLE DESCRIPTION'}
-                  recipeLink={link}
+                  key={index}  // Use the index as key (temp)
+                  title={element.recipe_name}  // Pass recipe info as props
+                  recipeLink={element.recipe_link}
+                  image={element.recipe_image}
                 />
               ))
             }

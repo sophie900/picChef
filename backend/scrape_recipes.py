@@ -2,6 +2,16 @@ from bs4 import BeautifulSoup
 import requests
 
 
+def build_query(dish_name: str) -> str:
+    """Given a dish name, builds a query to search allrecipes.com for the dish."""
+
+    base_string = 'https://www.allrecipes.com/search?q='
+
+    dish_query = '+'.join(dish_name.split())  # Split and join using + symbol
+
+    return base_string + dish_query
+
+
 def scrape_recipe(url: str) -> list:
     """
     Scrapes recipes from the given URL. Returns a dictionary with details

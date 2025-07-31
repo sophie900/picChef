@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import os
 from google import genai
 from google.genai import types
+from scrape_recipes import build_query, scrape_recipe
 
 
 # Load environment variables from .env file
@@ -47,11 +48,13 @@ def identify_dish(image_bytes: bytes, file_type: str) -> tuple[str, list]:
     )
     dish_name = response.text.strip()
 
-    recipes = client.models.generate_content(
-        model='gemini-2.5-flash-lite',
-        contents=[
-            f'Provide 3-6 valid, usable recipe links for {dish_name}, separated by a single space. Do not include anything else.'
-        ]
-    )
+    # recipes = client.models.generate_content(
+    #     model='gemini-2.5-flash-lite',
+    #     contents=[
+    #         f'Provide 3-6 valid, usable recipe links for {dish_name}, separated by a single space. Do not include anything else.'
+    #     ]
+    # )
+    url_to_scrape = build_query(dish_name)
+    recipes = scrape_recipe(url_to_scrape)
 
-    return dish_name, recipes.text.split()
+    return dish_name, recipes
