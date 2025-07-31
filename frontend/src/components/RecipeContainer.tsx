@@ -1,5 +1,5 @@
 interface RecipeContainerProps {
-    contents: string | React.ReactNode;
+  contents: string | React.ReactNode;
 }
 
 const RecipeContainer = ({ contents }: RecipeContainerProps) => {

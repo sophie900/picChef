@@ -2,29 +2,76 @@
 
 
 ## About the Project
-### From camera to kitchen
+### From camera to kitchen 🧑‍🍳
 
-Have you ever stumbled upon a delicious dish, but had no idea how to recreate it? If so, **picChef** is for you!
-Simply upload an image of a dish and picChef will generate a detailed recipe.
+*Calling all foodies!*
 
-### Built With
+Imagine this: you're doomscrolling social media and stumble across a scrumptious dish.
+Eager to try your hand at recreating it, you're disappointed to find that you have no idea what the dish is!
+If only there were a tool to help bring recipes to life, from camera to kitchen...
 
-* **React** for the frontend
-* **Tailwind** for styling
-* **Motion** for UI animations
-* **FastAPI** for the backend
+That's where **picChef** comes in. Simply upload an image of a dish and picChef will generate a detailed recipe.
+
+### Built With 💻
+
+* **React** for the frontend, built with **Typescript** for type safety
+* **Tailwind** for modern, responsive styling
+* **Motion** library for seamless UI animations
+* **FastAPI** and **Python** for the backend
 * **Gemini** for image recognition
+* **BeautifulSoup** library for recipe scraping
 
-### Features
+### Features ✨
 - [x] Upload image from file picker
 - [ ] Upload image via URL
+- [x] Image preview before upload
 - [x] Gemini AI image identification
 - [ ] Dark/light theme switcher
-- [ ] Recipe generation
+- [x] Recipe scraping
 - [ ] Saved recipes page
 - [ ] Authentication/login
 
 
 ## Getting Started
 
-Coming soon!
+### Prerequisites
+* Python 3.8+
+* Node.js
+* npm
+
+### Running the Application
+
+1. Clone the repository:  
+`git clone https://github.com/sophie900/picChef.git && npm install`
+
+2. Create virtual environment and install Python packages:  
+*Navigate to `backend` directory:*  
+`cd backend`  
+*Create a virtual environment:*  
+`python -m venv venv`  
+*Activate virtual environment*  
+`source venv/bin/activate` on macOS/Linux  
+`.\venv\Scripts\activate` on Windows  
+*Install requirements*
+`http://localhost:5173/`
+
+3. Get a Gemini API key [here](https://aistudio.google.com/apikey), then store it as an environment variable
+```
+cd backend
+echo "GEMINI_API_KEY=YOUR_API_KEY_HERE" >> .env
+```
+
+4. While in the `backend` folder, run the server  
+```
+fastapi dev main.py
+```
+
+5. Navigate to backend folder and run server
+```
+cd frontend
+npm run dev
+```
+
+6. The application should be running at [http://localhost:5173/](http://localhost:5173/).
+
+7. Happy cooking!

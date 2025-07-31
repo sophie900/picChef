@@ -1,12 +1,12 @@
 @import 'tailwindcss';
 
 :root {
+  @apply text-gray-200 bg-gray-800 bg-linear-to-t from-indigo-500/20 to-40% to-indigo-900/10;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  @apply text-zinc-200 bg-zinc-800 bg-linear-to-t from-indigo-500/20 to-40% to-indigo-900/10;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,12 +15,12 @@
 }
 
 .subtitle {
-  @apply text-zinc-300;
+  @apply text-gray-300;
 }
 
 a {
   font-weight: 500;
-  color: var(--color-indigo-300);
+  @apply text-indigo-300 hover:text-indigo-400;
   text-decoration: inherit;
 }
 a:hover {
@@ -37,16 +37,16 @@ body {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: var(--color-zinc-800);
-    background-color: var(--color-zinc-50);
+    color: var(--color-gray-800);
+    background-color: var(--color-gray-50);
     @apply bg-linear-to-t from-indigo-800/20 to-40% to-indigo-400/10;
   }
 
-  a:hover {
-    color: #747bff;
+  a {
+    @apply text-indigo-700 hover:text-indigo-800
   }
 
   .subtitle {
-    @apply text-zinc-600;
+    @apply text-gray-600;
   }
 }

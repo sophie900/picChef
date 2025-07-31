@@ -57,7 +57,6 @@ function App() {
     console.log('Uploading file:', selectedFile);
 
     setLoading(true);  // Start loading
-    setMessage('Uploading...');  // Show uploading message
 
     // Create a FormData object to send the file
     const formData = new FormData();
@@ -140,7 +139,6 @@ function App() {
               duration: 1,
               scale: {
                 type: "spring",
-                visualDuration: 1,
                 bounce: 0.4,
                 damping: 9
               }
@@ -213,8 +211,12 @@ function App() {
 
           {message && (
             <div
-              className={`mt-6 p-4 rounded-lg text-center
-                        ${message.includes('successful') ? 'bg-green-100 text-green-800 border border-green-300' : 'bg-red-100 text-red-800 border border-red-300'}`}
+              className={
+                `mt-6 p-4 rounded-lg text-center
+                ${message.includes('successful')
+                  ? 'bg-green-100 dark:bg-green-300/20 text-green-800 dark:text-green-100 border border-green-300 dark:border-green-500'
+                  : 'bg-red-100 dark:bg-red-300/20 text-red-800 dark:text-red-100 border border-red-300 dark:border-red-500/50'}`
+              }
             >
               <p className="font-medium">{message}</p>
             </div>
@@ -223,17 +225,22 @@ function App() {
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
           variants={staggerBox}
+          transition={{
+            duration: 2,
+            scale: {
+              type: "spring",
+              bounce: 0.4,
+              damping: 12,
+              mass: 1.5
+            }
+          }}
           className="bg-gray-50/80 dark:bg-gray-700/40
             p-8 rounded-lg shadow-lg shadow-indigo-400/40
             w-full md:w-2xl lg:w-4xl max-w-4xl
             border border-indigo-200/50 dark:border-indigo-500/10"
         >
           <RecipeContainer
-            
             contents={
               recipes.length == 0 ? "None yet! Upload an image to get started." : 
               recipes.map((element, index) => (  // Map each recipe link to a RecipeCard component
