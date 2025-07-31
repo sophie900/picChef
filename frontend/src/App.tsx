@@ -5,7 +5,8 @@ import './App.css'
 
 function App() {
   // State variables
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);// Store the selected file
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);  // Store the selected file
+  const [imageData, setImageData] = useState<string>();  // Store image data for preview
   const [loading, setLoading] = useState<boolean>(false);  // Manage loading status during upload
   const [message, setMessage] = useState<string>('');  // Hold success/error message
 
@@ -17,6 +18,13 @@ function App() {
     if (files && files.length > 0) {
       console.log('Selected file:', files[0]);  // Debug statement to log the selected file
       setSelectedFile(files[0]);
+
+      // Set image data for preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageData(reader.result as string);  // Set the image data for preview
+      };
+      reader.readAsDataURL(files[0]);  // Read the file as a data URL
 
       // Clear any previous messages
       setMessage('');
@@ -102,7 +110,7 @@ function App() {
 
   return (
     <>
-      <motion.ul
+      <motion.div
         variants={staggerContainer}
         initial="hidden"
         animate="show"
@@ -123,22 +131,27 @@ function App() {
                 damping: 9
               }
           }}
-          className="bg-white p-8 rounded-lg shadow-lg shadow-indigo-400/40 max-w-md mt-8 mb-8 ml-4 mr-4 border border-gray-200"
+          className="
+          bg-gray-50/80 dark:bg-gray-700/40
+            p-8 rounded-lg shadow-lg shadow-indigo-400/40
+            w-sm md:w-md lg:w-lg max-w-2xl
+            mt-8 mb-8 ml-4 mr-4
+            border border-gray-200 dark:border-gray-600"
         >
-          <h2 className="text-xl font-bold text-center text-gray-800 mb-6">Dish Uploader</h2>
+          <h2 className="text-xl font-bold text-center text-gray-800 dark:text-gray-200 mb-6">Dish Uploader</h2>
 
           <div className="mb-6">
-            <label htmlFor="file-input" className="block text-gray-700 text-sm font-semibold mb-2">
+            <label htmlFor="file-input" className="block text-gray-700 dark:text-gray-300 text-sm font-semibold mb-2">
               Select an image of your dish:
             </label>
 
-            <input  // File input for image selection.
+            <input  // File input for image selection
               id="file-input"
               type="file"
               accept="image/*"  // Restrict to image files
               value=''  // Initially, no file is selected
               onChange={handleFileChange}
-              className="block w-full text-sm text-gray-500
+              className="block w-full text-sm text-gray-500 dark:text-gray-400
                         file:mr-4 file:py-2 file:px-4
                         file:rounded-full file:border-0
                         file:text-sm file:font-semibold
@@ -165,6 +178,7 @@ function App() {
           {selectedFile && (
             <div className="mb-6 p-4 bg-indigo-50 rounded-lg border border-indigo-200 text-indigo-700 text-sm">
               <p className="font-medium">Selected File:</p>
+              <img className="mx-auto m-2" src={imageData} />
               <p className="truncate">{selectedFile.name}</p>
               <p className="text-xs text-indigo-500">Size: {(selectedFile.size / 1024).toFixed(2)} KB</p>
             </div>
@@ -191,7 +205,7 @@ function App() {
           )}
 
         </motion.div>
-      </motion.ul>
+      </motion.div>
     </>
   )
 }
