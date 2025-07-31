@@ -1,5 +1,5 @@
 from typing import Union
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from identify_image import identify_dish
 import os
@@ -59,7 +59,12 @@ async def upload_file(file: UploadFile = File(...)):
         return {'dish_name': dish_name}
     except ValueError as e:
         print(f'Error: {e}')
-        return {'error': str(e)}
+
+        # Wrong file type, raise HTTP exception with error message
+        raise HTTPException(
+            status_code=400,
+            detail=str(e)
+        )
 
 
 # TODO: Create an endpoint for handling URL uploads

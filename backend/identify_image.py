@@ -18,7 +18,7 @@ def identify_dish(image_bytes: bytes, file_type: str) -> str:
     """
 
     # Validate file type
-    supported_types = ['png', 'jpeg', 'webp', 'heic', 'heif']
+    supported_types = ['png', 'jpg', 'jpeg', 'webp', 'heic', 'heif']
 
     if file_type not in supported_types:
         raise ValueError(f"Unsupported file type: {file_type}. Supported types are: {', '.join(supported_types)}.")
@@ -39,4 +39,12 @@ def identify_dish(image_bytes: bytes, file_type: str) -> str:
             image
         ]
     )
-    return response.text
+    dish_name = response.text.strip()
+
+    recipe = client.models.generate_content(
+        model='gemini-2.5-flash-lite',
+        contents=[
+            f'Generate a recipe for {dish_name} with ingredients and instructions'
+        ]
+    )
+    return recipe.text

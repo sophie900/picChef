@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, stagger } from "motion/react"
 import './App.css'
+import RecipeContainer from './components/RecipeContainer'
 
 
 function App() {
@@ -68,9 +69,8 @@ function App() {
         const errorData: { detail?: string } = await response.json();  // Type annotation for error JSON response
         setMessage(`Upload failed: ${errorData.detail || 'Unknown error'}`);
       }
-    } catch (error: any) {  // Catch any type of error
-      // Catch network errors or other exceptions
-      console.error('Error uploading file:', error);
+    } catch (error: any) {  // Catch network errors or other exceptions
+      console.error('Error uploading file:', error);  // Debug message to log the error
       setMessage(`Network error or server unreachable: ${error.message || 'Please check your connection.'}`);
     } finally {
       setLoading(false);  // End loading
@@ -114,6 +114,7 @@ function App() {
         variants={staggerContainer}
         initial="hidden"
         animate="show"
+        className="flex flex-col justify-center items-center"
       >
         {/* Title and subtitle */}
         <motion.h1 variants={staggerText} transition={{duration: 2}}>picChef</motion.h1>
@@ -135,8 +136,8 @@ function App() {
           bg-gray-50/80 dark:bg-gray-700/40
             p-8 rounded-lg shadow-lg shadow-indigo-400/40
             w-sm md:w-md lg:w-lg max-w-2xl
-            mt-8 mb-8 ml-4 mr-4
-            border border-gray-200 dark:border-gray-600"
+            mt-16 mb-16 ml-4 mr-4
+            border border-indigo-200/50 dark:border-indigo-500/10"
         >
           <h2 className="text-xl font-bold text-center text-gray-800 dark:text-gray-200 mb-6">Dish Uploader</h2>
 
@@ -149,14 +150,14 @@ function App() {
               id="file-input"
               type="file"
               accept="image/*"  // Restrict to image files
-              value=''  // Initially, no file is selected
+              value=""  // Initially, no file is selected
               onChange={handleFileChange}
               className="block w-full text-sm text-gray-500 dark:text-gray-400
                         file:mr-4 file:py-2 file:px-4
                         file:rounded-full file:border-0
                         file:text-sm file:font-semibold
-                        file:bg-indigo-50 file:text-indigo-700
-                        hover:file:bg-indigo-100"
+                        file:bg-indigo-100 file:text-indigo-700
+                        hover:file:bg-indigo-200"
             />
           </div>
 
@@ -176,11 +177,13 @@ function App() {
 
           {/* Boolean logic to display file info */}
           {selectedFile && (
-            <div className="mb-6 p-4 bg-indigo-50 rounded-lg border border-indigo-200 text-indigo-700 text-sm">
+            <div className="
+              mb-6 p-4 rounded-lg bg-indigo-50 dark:bg-gray-900/25 border border-indigo-200 dark:border-indigo-400/40
+              text-indigo-700 dark:text-indigo-300 text-sm">
               <p className="font-medium">Selected File:</p>
               <img className="mx-auto m-2" src={imageData} />
               <p className="truncate">{selectedFile.name}</p>
-              <p className="text-xs text-indigo-500">Size: {(selectedFile.size / 1024).toFixed(2)} KB</p>
+              <p className="text-xs text-indigo-500 dark:text-indigo-400">Size: {(selectedFile.size / 1024).toFixed(2)} KB</p>
             </div>
           )}
 
@@ -204,6 +207,19 @@ function App() {
             </div>
           )}
 
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="bg-gray-50/80 dark:bg-gray-700/40
+            p-8 rounded-lg shadow-lg shadow-indigo-400/40
+            w-xl md:w-2xl lg:w-3xl max-w-3xl
+            ml-4 mr-4
+            border border-indigo-200/50 dark:border-indigo-500/10"
+        >
+          <RecipeContainer contents="None yet! Upload an image to get started." />
         </motion.div>
       </motion.div>
     </>
