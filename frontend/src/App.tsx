@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion, stagger } from "motion/react"
 import './App.css'
 import RecipeContainer from './components/RecipeContainer'
+import RecipeCard from './components/RecipeCard'
 
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
   const [imageData, setImageData] = useState<string>();  // Store image data for preview
   const [loading, setLoading] = useState<boolean>(false);  // Manage loading status during upload
   const [message, setMessage] = useState<string>('');  // Hold success/error message
+  const [recipeLinks, setRecipeLinks] = useState<Array<string>>([]);  // Store recipe links as list
 
 
   // Handler for file input change
@@ -65,6 +67,10 @@ function App() {
       // Check if the response was successful
       if (response.ok) {
         setMessage('Upload successful!');
+
+        const response_json = await response.json();
+        console.log(response_json);  // Log the response JSON
+        setRecipeLinks(response_json.recipes);
       } else {
         const errorData: { detail?: string } = await response.json();  // Type annotation for error JSON response
         setMessage(`Upload failed: ${errorData.detail || 'Unknown error'}`);
@@ -135,8 +141,8 @@ function App() {
           className="
           bg-gray-50/80 dark:bg-gray-700/40
             p-8 rounded-lg shadow-lg shadow-indigo-400/40
-            w-sm md:w-md lg:w-lg max-w-2xl
-            mt-16 mb-16 ml-4 mr-4
+            w-80% md:w-md lg:w-lg max-w-2xl
+            mt-16 mb-16
             border border-indigo-200/50 dark:border-indigo-500/10"
         >
           <h2 className="text-xl font-bold text-center text-gray-800 dark:text-gray-200 mb-6">Dish Uploader</h2>
@@ -178,7 +184,7 @@ function App() {
           {/* Boolean logic to display file info */}
           {selectedFile && (
             <div className="
-              mb-6 p-4 rounded-lg bg-indigo-50 dark:bg-gray-900/25 border border-indigo-200 dark:border-indigo-400/40
+              mb-6 p-4 rounded-lg bg-indigo-50 dark:bg-gray-900/30 border border-indigo-200 dark:border-indigo-400/40
               text-indigo-700 dark:text-indigo-300 text-sm">
               <p className="font-medium">Selected File:</p>
               <img className="mx-auto m-2" src={imageData} />
@@ -213,13 +219,26 @@ function App() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
+          variants={staggerBox}
           className="bg-gray-50/80 dark:bg-gray-700/40
             p-8 rounded-lg shadow-lg shadow-indigo-400/40
-            w-xl md:w-2xl lg:w-3xl max-w-3xl
-            ml-4 mr-4
+            w-full md:w-2xl lg:w-4xl max-w-4xl
             border border-indigo-200/50 dark:border-indigo-500/10"
         >
-          <RecipeContainer contents="None yet! Upload an image to get started." />
+          <RecipeContainer
+            
+            contents={
+              recipeLinks.length == 0 ? "None yet! Upload an image to get started." : 
+              recipeLinks.map((link) => (  // Map each recipe link to a RecipeCard component
+                <RecipeCard
+                  key={link}  // Use the link as a unique key
+                  title={'SAMPLE TITLE'}
+                  description={'SAMPLE DESCRIPTION'}
+                  recipeLink={link}
+                />
+              ))
+            }
+          />
         </motion.div>
       </motion.div>
     </>

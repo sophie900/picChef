@@ -11,7 +11,13 @@ my_api_key = os.getenv('GEMINI_API_KEY')
 client = genai.Client(api_key=my_api_key)
 
 
-def identify_dish(image_bytes: bytes, file_type: str) -> str:
+
+class FileTypeError(Exception):
+    """Custom exception for unsupported file types."""
+    pass
+
+
+def identify_dish(image_bytes: bytes, file_type: str) -> tuple[str, list]:
     """
     Identifies the dish in the uploaded image using Gemini AI.
     Returns a string response with the dish name.
@@ -21,7 +27,7 @@ def identify_dish(image_bytes: bytes, file_type: str) -> str:
     supported_types = ['png', 'jpg', 'jpeg', 'webp', 'heic', 'heif']
 
     if file_type not in supported_types:
-        raise ValueError(f"Unsupported file type: {file_type}. Supported types are: {', '.join(supported_types)}.")
+        raise FileTypeError(f"Unsupported file type: {file_type}. Supported types are: {', '.join(supported_types)}.")
     elif file_type == 'jpg':
         file_type = 'jpeg'
 
@@ -41,10 +47,11 @@ def identify_dish(image_bytes: bytes, file_type: str) -> str:
     )
     dish_name = response.text.strip()
 
-    recipe = client.models.generate_content(
+    recipes = client.models.generate_content(
         model='gemini-2.5-flash-lite',
         contents=[
-            f'Generate a recipe for {dish_name} with ingredients and instructions'
+            f'Provide 3-6 valid, usable recipe links for {dish_name}, separated by a single space. Do not include anything else.'
         ]
     )
-    return recipe.text
+
+    return dish_name, recipes.text.split()

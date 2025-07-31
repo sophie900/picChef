@@ -1,8 +1,8 @@
+import os
 from typing import Union
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from identify_image import identify_dish
-import os
+from identify_image import identify_dish, FileTypeError
 
 
 # Initialize FastAPI app
@@ -53,14 +53,16 @@ async def upload_file(file: UploadFile = File(...)):
 
     try:
         # Pass the file to Gemini AI model for dish identification
-        dish_name = identify_dish(image_contents, file_type)
+        dish_name, recipes = identify_dish(image_contents, file_type)
         print(dish_name)  # Ensure dish is identified correctly
 
-        return {'dish_name': dish_name}
-    except ValueError as e:
+        return {
+            'dish_name': dish_name,
+            'recipes': recipes
+        }
+    except FileTypeError as e:  # Wrong file type, raise HTTP exception with error message
         print(f'Error: {e}')
-
-        # Wrong file type, raise HTTP exception with error message
+        
         raise HTTPException(
             status_code=400,
             detail=str(e)
