@@ -6,7 +6,7 @@ interface RecipeCardProps {
     image: string;
 }
 
-// TODO: implement the RecipeCard component
+
 const RecipeCard = ({ title, recipeLink, image }: RecipeCardProps) => {
   return (
     <>

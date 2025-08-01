@@ -3,6 +3,9 @@ from typing import Union
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from identify_image import identify_dish, FileTypeError
+from sqlalchemy import create_engine
+from sqlalchemy.orm import Session
+from models import SavedRecipe, User
 
 
 # Initialize FastAPI app
@@ -36,7 +39,7 @@ def read_root():
 
 # File upload endpoint
 @app.post('/uploadfile/')
-async def upload_file(file: UploadFile = File(...)):
+async def upload_file(file: UploadFile):
     """
     Endpoint to upload an image file and identify the dish using Gemini AI.
     Returns the identified dish name.
@@ -66,6 +69,39 @@ async def upload_file(file: UploadFile = File(...)):
         raise HTTPException(
             status_code=400,
             detail=str(e)
+        )
+
+
+
+@app.post('/saverecipe/')
+def save_recipe(recipe_data: dict):
+    try:
+        # Ensure recipe_data has the required fields
+        print(recipe_data.name, recipe_data.link, recipe_data.image)
+    except:
+        raise HTTPException(
+            status_code=400,
+            detail='Could not save recipe: recipe data is incomplete'
+        )
+
+    try:
+        # Create engine and start the DB session
+        engine = create_engine('sqlite:///data/recipe_data.db')
+
+        with Session(engine) as session:
+            recipe = SavedRecipe(
+                name=recipe_data.name,
+                link=recipe_data.link,
+                image=recipe_data.image,
+                user_id=1  # TODO: change this based on the user
+            )
+            session.add(recipe)  # Add recipe to saved_recipe table
+
+        return {'message': f'Saved recipe: {recipe_data.name}'}
+    except Exception as e:
+        raise HTTPException(
+            status_code=400,
+            detail='Could not save recipe: ' + str(e)
         )
 
 
