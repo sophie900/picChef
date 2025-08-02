@@ -12,10 +12,9 @@ def build_query(dish_name: str) -> str:
     return base_string + dish_query
 
 
-def scrape_recipe(url: str) -> list:
+def scrape_recipe(url: str) -> list[dict]:
     """
-    Scrapes recipes from the given URL. Returns a dictionary with details
-    about the specified number of recipes.
+    Scrapes recipes from the given URL. Returns a dictionary with recipe details.
     """
     try:
         # Retrieve the page content

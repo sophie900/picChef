@@ -3,7 +3,7 @@ from typing import Union
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from identify_image import identify_dish, FileTypeError
+from identify_image import identify_dish, FileTypeError, ImageQualityError
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from models import SavedRecipe, User
@@ -38,7 +38,13 @@ def read_root():
 #     return {'item_id': item_id, 'q': q, 'r': r}
 
 
+
 # File upload endpoint
+# class FileInfo(BaseModel):
+#     dish_name: str
+#     recipes: list[dict]
+
+
 @app.post('/uploadfile/')
 async def upload_file(file: UploadFile):
     """
@@ -64,27 +70,34 @@ async def upload_file(file: UploadFile):
             'dish_name': dish_name,  # String containing original dish name
             'recipes': recipes  # List of dictionaries containing recipe info
         }
-    except FileTypeError as e:  # Wrong file type, raise HTTP exception with error message
+    except (FileTypeError, ImageQualityError) as e:
+        # Handle custom errors: wrong file type and poor image quality
         print(f'Error: {e}')
-        
+
         raise HTTPException(
             status_code=400,
             detail=str(e)
         )
 
 
-# Configuration for save recipe endpoint
 
-# Create pydantic model for JSON input
+# Save recipe endpoint
 class RecipeData(BaseModel):
     name: str
     link: str
     image: str
 
+class SaveRecipeMessage(BaseModel):
+    message: str
 
-# Save recipe endpoint
+
 @app.post('/saverecipe/')
-def save_recipe(recipe_data: RecipeData):
+def save_recipe(recipe_data: RecipeData) -> SaveRecipeMessage:
+    """
+    Endpoint for saving a recipe and its corresponding information (name, link, image).
+
+    Returns a message indicating a successful operation, or raises an HTTPError.
+    """
     try:
         # Ensure recipe_data has the required fields
         print(recipe_data.name, recipe_data.link, recipe_data.image)
@@ -106,12 +119,12 @@ def save_recipe(recipe_data: RecipeData):
                 user_id=1  # TODO: change this based on the user
             )
             session.add(recipe)  # Add recipe to saved_recipe table
-            session.commit()  # Remember to commit the changes!
+            session.commit()  # Remember to commit the changes
 
         return {'message': f'Saved recipe: {recipe_data.name}'}
     except Exception as e:
         raise HTTPException(
-            status_code=400,
+            status_code=500,
             detail='Could not save recipe: ' + str(e)
         )
 

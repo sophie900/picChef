@@ -13,15 +13,23 @@ client = genai.Client(api_key=my_api_key)
 
 
 
+# Define custom exceptions
 class FileTypeError(Exception):
     """Custom exception for unsupported file types."""
     pass
 
 
-def identify_dish(image_bytes: bytes, file_type: str) -> tuple[str, list]:
+
+class ImageQualityError(Exception):
+    """An exception to raise when the user provides an image with no identifiable dish."""
+    pass
+
+
+
+def identify_dish(image_bytes: bytes, file_type: str) -> tuple[str, list[dict]]:
     """
     Identifies the dish in the uploaded image using Gemini AI.
-    Returns a string response with the dish name.
+    Returns a tuple with the dish name and generated recipes.
     """
 
     # Validate file type
@@ -42,19 +50,20 @@ def identify_dish(image_bytes: bytes, file_type: str) -> tuple[str, list]:
     response = client.models.generate_content(
         model='gemini-2.5-flash-lite',
         contents=[
-            'Identify the dish as concisely as possible',
+            'Identify the dish as concisely as possible. Return "error" if no dish is present.',
             image
         ]
     )
     dish_name = response.text.strip()
+    print(dish_name)  # Debug
 
-    # recipes = client.models.generate_content(
-    #     model='gemini-2.5-flash-lite',
-    #     contents=[
-    #         f'Provide 3-6 valid, usable recipe links for {dish_name}, separated by a single space. Do not include anything else.'
-    #     ]
-    # )
+    if 'error' in dish_name.lower():
+        raise ImageQualityError('Image does not contain a dish. Please choose a different image.')
+
+    # Build query to search allrecipes.com for dish
     url_to_scrape = build_query(dish_name)
+
+    # Scrape recipes on search results page
     recipes = scrape_recipe(url_to_scrape)
 
     return dish_name, recipes
