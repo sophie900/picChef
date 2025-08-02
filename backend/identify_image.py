@@ -60,10 +60,13 @@ def identify_dish(image_bytes: bytes, file_type: str) -> tuple[str, list[dict]]:
     if 'error' in dish_name.lower():
         raise ImageQualityError('Image does not contain a dish. Please choose a different image.')
 
-    # Build query to search allrecipes.com for dish
-    url_to_scrape = build_query(dish_name)
+    # TODO: refactor code to separate concerns (image identification, recipe scraping)
+    # # Build query to search allrecipes.com for dish
+    # url_to_scrape = build_query(dish_name)
 
-    # Scrape recipes on search results page
-    recipes = scrape_recipe(url_to_scrape)
+    # # Scrape recipes on search results page
+    # recipes = scrape_recipe(url_to_scrape)
 
-    return dish_name, recipes
+    return dish_name
+
+

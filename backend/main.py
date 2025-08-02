@@ -1,9 +1,10 @@
 import os
 from typing import Union
-from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi import FastAPI, File, UploadFile, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from identify_image import identify_dish, FileTypeError, ImageQualityError
+from scrape_recipes import build_query, scrape_recipe
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 from models import SavedRecipe, User
@@ -68,7 +69,7 @@ async def upload_file(file: UploadFile):
 
         return {
             'dish_name': dish_name,  # String containing original dish name
-            'recipes': recipes  # List of dictionaries containing recipe info
+            # 'recipes': recipes  # List of dictionaries containing recipe info
         }
     except (FileTypeError, ImageQualityError) as e:
         # Handle custom errors: wrong file type and poor image quality
@@ -78,6 +79,30 @@ async def upload_file(file: UploadFile):
             status_code=400,
             detail=str(e)
         )
+
+
+
+# Search dishes GET endpoint
+class SearchDishInput(BaseModel):
+    dish_name: str
+
+
+class SearchDishOutput(BaseModel):
+    recipes: list
+
+
+@app.get('/search')
+async def search_dish(q: str = Query()):  # Query is required
+    
+    # print(q)  # Debug: print the query
+    url_to_scrape = build_query(q)  # Restructure query to search allrecipes.com
+
+    # Scrape recipes on search results page
+    recipes = scrape_recipe(url_to_scrape)
+
+    return {
+        'recipes': recipes
+    }
 
 
 
