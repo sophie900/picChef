@@ -14,10 +14,14 @@ That's where **picChef** comes in. Simply upload an image of a dish and picChef 
 
 ### Built With 💻
 
-* **React** for the frontend, built with **Typescript** for type safety
+#### Frontend
+* **React** frontend for modularity, with **Typescript** for type safety
 * **Tailwind** for modern, responsive styling
 * **Motion** library for seamless UI animations
+
+#### Backend
 * **FastAPI** and **Python** for the backend
+* **SQLite** database for recipe storage & **SQLAlchemy** ORM for DB interaction
 * **Gemini** for image recognition
 * **BeautifulSoup** library for recipe scraping
 
@@ -27,7 +31,7 @@ That's where **picChef** comes in. Simply upload an image of a dish and picChef 
 - [x] Image preview before upload
 - [x] Gemini AI image identification
 - [ ] Dark/light theme switcher
-- [x] Recipe scraping
+- [x] Scrape allrecipes for relevant recipes
 - [ ] Saved recipes page
 - [ ] Authentication/login
 
@@ -35,25 +39,30 @@ That's where **picChef** comes in. Simply upload an image of a dish and picChef 
 ## Getting Started
 
 ### Prerequisites
-* Python 3.8+
-* Node.js
-* npm
+- Python 3.8+
+- Node.js
+- npm
 
 ### Running the Application
 
 1. Clone the repository:  
-`git clone https://github.com/sophie900/picChef.git && npm install`
+```
+git clone https://github.com/sophie900/picChef.git && npm install
+```
 
 2. Create virtual environment and install Python packages:  
-*Navigate to `backend` directory:*  
-`cd backend`  
-*Create a virtual environment:*  
-`python -m venv venv`  
-*Activate virtual environment*  
+- *Navigate to `backend` directory:*  
+`cd backend`
+
+- *Create a virtual environment:*  
+`python -m venv venv`
+
+- *Activate virtual environment:*  
 `source venv/bin/activate` on macOS/Linux  
-`.\venv\Scripts\activate` on Windows  
-*Install requirements*
-`http://localhost:5173/`
+`.\venv\Scripts\activate` on Windows
+
+- *Install requirements:*  
+`pip install -r requirements.txt`
 
 3. Get a Gemini API key [here](https://aistudio.google.com/apikey), then store it as an environment variable
 ```

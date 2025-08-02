@@ -2,6 +2,7 @@ import os
 from typing import Union
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from pydantic import BaseModel
 from identify_image import identify_dish, FileTypeError
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
@@ -72,9 +73,18 @@ async def upload_file(file: UploadFile):
         )
 
 
+# Configuration for save recipe endpoint
 
+# Create pydantic model for JSON input
+class RecipeData(BaseModel):
+    name: str
+    link: str
+    image: str
+
+
+# Save recipe endpoint
 @app.post('/saverecipe/')
-def save_recipe(recipe_data: dict):
+def save_recipe(recipe_data: RecipeData):
     try:
         # Ensure recipe_data has the required fields
         print(recipe_data.name, recipe_data.link, recipe_data.image)
@@ -96,6 +106,7 @@ def save_recipe(recipe_data: dict):
                 user_id=1  # TODO: change this based on the user
             )
             session.add(recipe)  # Add recipe to saved_recipe table
+            session.commit()  # Remember to commit the changes!
 
         return {'message': f'Saved recipe: {recipe_data.name}'}
     except Exception as e:

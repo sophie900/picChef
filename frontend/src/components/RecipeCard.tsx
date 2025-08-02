@@ -7,6 +7,37 @@ interface RecipeCardProps {
 }
 
 
+
+const handleSaveRecipe = async (recipe_name: string, recipe_link: string, recipe_image: string) => {
+  try {
+    console.log('Saving recipe...')
+
+    const response = await fetch('http://127.0.0.1:8000/saverecipe/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'  // Set correct Content-Type header
+      },
+      body: JSON.stringify({
+        'name': recipe_name,
+        'link': recipe_link,
+        'image': recipe_image
+      })
+    })
+
+    if (response.ok) {
+      const response_json = await response.json();
+      console.log(response_json.message);  // Log the response JSON
+    } else {
+      const errorData: { detail?: string } = await response.json();
+      console.log('Error: ', errorData.detail)
+    }
+  } catch {
+    
+  }
+}
+
+
+
 const RecipeCard = ({ title, recipeLink, image }: RecipeCardProps) => {
   return (
     <>
@@ -23,7 +54,7 @@ const RecipeCard = ({ title, recipeLink, image }: RecipeCardProps) => {
         <a href={recipeLink} className="wrap-break-word">
             {recipeLink}
         </a>
-        <button>
+        <button onClick={ () => {handleSaveRecipe(title, recipeLink, image)} }>  { /* Save recipe on button click */}
           { /* SVG code courtesy to flaticon.com */ }
           <svg
             xmlns="http://www.w3.org/2000/svg"
