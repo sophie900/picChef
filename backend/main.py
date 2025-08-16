@@ -158,4 +158,24 @@ def save_recipe(recipe_data: RecipeData) -> SaveRecipeMessage:
         )
 
 
+
+# Get saved recipes endpoint
+@app.get('/savedrecipes/')
+def get_saved_recipes():
+    try:
+        # Create engine and start the DB session
+        engine = create_engine('sqlite:///data/recipe_data.db')
+
+        with Session(engine) as session:
+            all_saved_recipes = session.query(SavedRecipe).all()  # Query database for all saved recipes
+
+        return all_saved_recipes
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail='Could not retrieve saved recipes: ' + str(e)
+        )
+
+
+
 # TODO: Create an endpoint for handling URL uploads

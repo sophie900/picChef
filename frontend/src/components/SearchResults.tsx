@@ -52,15 +52,6 @@ const SearchResults = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{
-            duration: 2,
-            scale: {
-              type: "spring",
-              bounce: 0.4,
-              damping: 12,
-              mass: 1.5
-            }
-          }}
           className="m-auto
           "
         >

@@ -42,15 +42,19 @@ const RecipeCard = ({ title, recipeLink, image }: RecipeCardProps) => {
   return (
     <>
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ y: 10 }}
+        animate={{ y: 0 }}
+        transition={{
+          duration: 0.5,
+        }}
         className="
-        bg-gray-200/75 dark:bg-gray-700/75 hover:bg-gray-300/75 dark:hover:bg-gray-500/50
-        p-4 rounded-xl shadow-md w-full sm:w-4/9 md:w-4/9 lg:w-3/10 xl:w-1/5
-        hover:-translate-y-1 transition-all"
+          bg-gray-200/75 dark:bg-gray-700/75 hover:bg-gray-300/75 dark:hover:bg-gray-500/50
+          p-4 rounded-xl shadow-md w-full sm:w-4/9 md:w-4/9 lg:w-3/10 xl:w-1/5
+          hover:-translate-y-1 transition-all
+        "
       >
-        <img src={image} alt={title} className="w-full" />
-        <h2 className="overflow-hidden">{title}</h2>
+        <img src={image} alt={title + " image"} className="w-full" />
+        <h2 className="overflow-hidden text-lg font-semibold mt-2 mb-1">{title}</h2>
         <a href={recipeLink} className="wrap-break-word">
             {recipeLink}
         </a>

@@ -32,7 +32,8 @@ That's where **picChef** comes in. Simply upload an image of a dish and picChef 
 - [x] Gemini AI image identification
 - [x] Search results page displaying recipes scraped from allrecipes site
 - [ ] Dark/light theme switcher
-- [ ] Saved recipes page
+- [x] Saved recipes page
+- [ ] Filter saved recipes by condition
 - [ ] Authentication/login
 
 

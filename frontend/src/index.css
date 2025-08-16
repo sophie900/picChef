@@ -18,14 +18,14 @@
   @apply text-gray-300;
 }
 
-a {
+/* a {
   font-weight: 500;
   @apply text-indigo-300 hover:text-indigo-400;
   text-decoration: inherit;
 }
 a:hover {
   color: var(--color-indigo-400);
-}
+} */
 
 body {
   margin: 0;
@@ -42,9 +42,9 @@ body {
     @apply bg-linear-to-t from-indigo-800/20 to-40% to-indigo-400/10;
   }
 
-  a {
+  /* a {
     @apply text-indigo-700 hover:text-indigo-800
-  }
+  } */
 
   .subtitle {
     @apply text-gray-600;

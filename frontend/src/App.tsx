@@ -2,8 +2,6 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { motion, stagger } from "motion/react"
 import './App.css'
-// import RecipeContainer from './components/RecipeContainer'
-// import RecipeCard from './components/RecipeCard'
 
 
 function App() {
@@ -134,8 +132,9 @@ function App() {
         variants={staggerContainer}
         initial="hidden"
         animate="show"
-        className="flex flex-col justify-center items-center"
+        className="flex flex-col justify-center items-center main-content"
       >
+
         {/* Title and subtitle */}
         <motion.h1 variants={staggerText} transition={{duration: 2}}>picChef</motion.h1>
         <motion.h3 variants={staggerText} transition={{duration: 1}} className="italic subtitle">From camera to kitchen.</motion.h3>
