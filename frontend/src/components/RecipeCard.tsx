@@ -32,7 +32,7 @@ const handleSaveRecipe = async (recipe_name: string, recipe_link: string, recipe
       console.log('Error: ', errorData.detail)
     }
   } catch {
-    
+    null  // TODO: fix this
   }
 }
 
@@ -45,11 +45,11 @@ const RecipeCard = ({ title, recipeLink, image }: RecipeCardProps) => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="
-        bg-gray-200/75 dark:bg-gray-600/50 dark:hover:bg-gray-500/50
-        p-4 rounded-xl shadow-md w-full sm:w-2/5 md:w-2/7
+        bg-gray-200/75 dark:bg-gray-700/75 hover:bg-gray-300/75 dark:hover:bg-gray-500/50
+        p-4 rounded-xl shadow-md w-full sm:w-4/9 md:w-4/9 lg:w-3/10 xl:w-1/5
         hover:-translate-y-1 transition-all"
       >
-        <img src={image} className="w-full" />
+        <img src={image} alt={title} className="w-full" />
         <h2 className="overflow-hidden">{title}</h2>
         <a href={recipeLink} className="wrap-break-word">
             {recipeLink}

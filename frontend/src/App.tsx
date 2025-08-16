@@ -1,8 +1,9 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import { motion, stagger } from "motion/react"
 import './App.css'
-import RecipeContainer from './components/RecipeContainer'
-import RecipeCard from './components/RecipeCard'
+// import RecipeContainer from './components/RecipeContainer'
+// import RecipeCard from './components/RecipeCard'
 
 
 function App() {
@@ -11,14 +12,17 @@ function App() {
   const [imageData, setImageData] = useState<string>();  // Store image data for preview
   const [loading, setLoading] = useState<boolean>(false);  // Manage loading status during upload
   const [message, setMessage] = useState<string>('');  // Hold success/error message
+  const navigate = useNavigate();
 
-  // Define interface for RecipeObject
-  interface RecipeObject {
-    recipe_name: string;
-    recipe_link: string;
-    recipe_image: string;
-  }
-  const [recipes, setRecipes] = useState<Array<RecipeObject>>([]);  // Store recipe information
+  // // Define interface for RecipeObject
+  // interface RecipeObject {
+  //   recipe_name: string;
+  //   recipe_link: string;
+  //   recipe_image: string;
+  // }
+  // const [recipes, setRecipes] = useState<Array<RecipeObject>>([]);  // Store recipe information
+
+
 
 
   // Handler for file input change
@@ -76,7 +80,11 @@ function App() {
 
         const response_json = await response.json();
         console.log(response_json);  // Log the response JSON
-        setRecipes(response_json.recipes);
+        // setRecipes(response_json.recipes);
+
+        // Navigate to search page!
+        navigate(`/search?q=${response_json.dish_name}`)
+
       } else {
         const errorData: { detail?: string } = await response.json();  // Type annotation for error JSON response
         setMessage(`Upload failed: ${errorData.detail || 'Unknown error'}`);
@@ -224,7 +232,7 @@ function App() {
 
         </motion.div>
 
-        <motion.div
+        {/* <motion.div
           variants={staggerBox}
           transition={{
             duration: 2,
@@ -253,7 +261,7 @@ function App() {
               ))
             }
           />
-        </motion.div>
+        </motion.div> */}
       </motion.div>
     </>
   )

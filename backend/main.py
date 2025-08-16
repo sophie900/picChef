@@ -1,6 +1,5 @@
 import os
-from typing import Union
-from fastapi import FastAPI, File, UploadFile, HTTPException, Query
+from fastapi import FastAPI, UploadFile, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from identify_image import identify_dish, FileTypeError, ImageQualityError
@@ -43,7 +42,7 @@ def read_root():
 # File upload endpoint
 # class FileInfo(BaseModel):
 #     dish_name: str
-#     recipes: list[dict]
+#     recipes: dict
 
 
 @app.post('/uploadfile/')
@@ -64,7 +63,7 @@ async def upload_file(file: UploadFile):
 
     try:
         # Pass the file to Gemini AI model for dish identification
-        dish_name, recipes = identify_dish(image_contents, file_type)
+        dish_name = identify_dish(image_contents, file_type)
         print(dish_name)  # Ensure dish is identified correctly
 
         return {
@@ -87,13 +86,18 @@ class SearchDishInput(BaseModel):
     dish_name: str
 
 
-class SearchDishOutput(BaseModel):
-    recipes: list
+# class SearchDishOutput(BaseModel):
+#     recipes: dict[list]
 
 
 @app.get('/search')
 async def search_dish(q: str = Query()):  # Query is required
-    
+    """
+    Given a dish query, scrapes allrecipes for related recipes.
+
+    Returns a dictionary containing a list of recipes.
+    """
+
     # print(q)  # Debug: print the query
     url_to_scrape = build_query(q)  # Restructure query to search allrecipes.com
 

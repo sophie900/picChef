@@ -26,10 +26,10 @@ class ImageQualityError(Exception):
 
 
 
-def identify_dish(image_bytes: bytes, file_type: str) -> tuple[str, list[dict]]:
+def identify_dish(image_bytes: bytes, file_type: str) -> str:
     """
     Identifies the dish in the uploaded image using Gemini AI.
-    Returns a tuple with the dish name and generated recipes.
+    Returns a string with the identified dish name.
     """
 
     # Validate file type
@@ -68,5 +68,3 @@ def identify_dish(image_bytes: bytes, file_type: str) -> tuple[str, list[dict]]:
     # recipes = scrape_recipe(url_to_scrape)
 
     return dish_name
-
-
