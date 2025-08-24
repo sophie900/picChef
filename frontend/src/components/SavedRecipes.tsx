@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import RecipeCard from './RecipeCard'
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from '@supabase/supabase-js'
+import { type Database } from '../database.types'
 
 // Create supabase client
-const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY)
+const supabase = createClient<Database>(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY)
 
 
 const SavedRecipes = () => {
@@ -18,10 +19,15 @@ const SavedRecipes = () => {
     const [recipes, setRecipes] = useState<Array<RecipeObject>>([]);  // Store recipe information
 
     async function getRecipes() {
-        const { data } = await supabase.from('recipe').select();
-        console.log('Supabase response:')
-        console.log(data)
-        setRecipes(data);
+        const { data, error } = await supabase.from('recipe').select();
+
+        if (error) {
+            console.log(error)
+        } else {
+            console.log('Supabase response:')
+            console.log(data)
+            setRecipes(data);
+        }
     }
 
 
