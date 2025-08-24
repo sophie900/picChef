@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router'
 import { motion, stagger } from "motion/react"
 import './App.css'
 
-
 function App() {
   // State variables
   const [selectedFile, setSelectedFile] = useState<File | null>(null);  // Store the selected file
@@ -134,7 +133,6 @@ function App() {
         animate="show"
         className="flex flex-col justify-center items-center main-content"
       >
-
         {/* Title and subtitle */}
         <motion.h1 variants={staggerText} transition={{duration: 2}}>picChef</motion.h1>
         <motion.h3 variants={staggerText} transition={{duration: 1}} className="italic subtitle">From camera to kitchen.</motion.h3>
@@ -230,37 +228,6 @@ function App() {
           )}
 
         </motion.div>
-
-        {/* <motion.div
-          variants={staggerBox}
-          transition={{
-            duration: 2,
-            scale: {
-              type: "spring",
-              bounce: 0.4,
-              damping: 12,
-              mass: 1.5
-            }
-          }}
-          className="bg-gray-50/80 dark:bg-gray-700/40
-            p-8 rounded-lg shadow-lg shadow-indigo-400/40
-            w-full md:w-2xl lg:w-4xl max-w-4xl
-            border border-indigo-200/50 dark:border-indigo-500/10"
-        >
-          <RecipeContainer
-            contents={
-              recipes.length == 0 ? "None yet! Upload an image to get started." : 
-              recipes.map((element, index) => (  // Map each recipe link to a RecipeCard component
-                <RecipeCard
-                  key={index}  // Use the index as key (temp)
-                  title={element.recipe_name}  // Pass recipe info as props
-                  recipeLink={element.recipe_link}
-                  image={element.recipe_image}
-                />
-              ))
-            }
-          />
-        </motion.div> */}
       </motion.div>
     </>
   )

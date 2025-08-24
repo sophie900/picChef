@@ -6,6 +6,7 @@ import App from './App.tsx'
 import SearchResults from './components/SearchResults.tsx'
 import SavedRecipes from './components/SavedRecipes.tsx'
 import NavBar from './components/NavBar.tsx'
+import Login from './components/Login.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -15,6 +16,7 @@ createRoot(document.getElementById('root')!).render(
         <Route index element={<App />} />
         <Route path='/search' element={<SearchResults />} />
         <Route path='/saved' element={<SavedRecipes />} />
+        <Route path='/login' element={<Login />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
