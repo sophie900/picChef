@@ -42,7 +42,6 @@ def read_root():
 # File upload endpoint
 # class FileInfo(BaseModel):
 #     dish_name: str
-#     recipes: dict
 
 
 @app.post('/uploadfile/')
@@ -68,7 +67,6 @@ async def upload_file(file: UploadFile):
 
         return {
             'dish_name': dish_name,  # String containing original dish name
-            # 'recipes': recipes  # List of dictionaries containing recipe info
         }
     except (FileTypeError, ImageQualityError) as e:
         # Handle custom errors: wrong file type and poor image quality

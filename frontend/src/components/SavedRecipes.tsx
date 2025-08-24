@@ -1,39 +1,52 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import RecipeCard from './RecipeCard'
+import { createClient } from "@supabase/supabase-js";
+
+// Create supabase client
+const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY)
 
 
 const SavedRecipes = () => {
     // Define interface for RecipeObject
     interface RecipeObject {
-        name: string;
-        link: string;
-        image: string;
+        recipe_name: string;
+        recipe_link: string;
+        recipe_image: string;
     }
+    // const [recipes, setRecipes] = useState<Array<RecipeObject>>([]);  // Store recipe information
     const [recipes, setRecipes] = useState<Array<RecipeObject>>([]);  // Store recipe information
+
+    async function getRecipes() {
+        const { data } = await supabase.from('recipe').select();
+        console.log('Supabase response:')
+        console.log(data)
+        setRecipes(data);
+    }
 
 
     // Employ useEffect hook to retrieve dish data from API
     useEffect(() => {
-      const fetchRecipes = async () => {
-            const response = await fetch('http://127.0.0.1:8000/savedrecipes/', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+        getRecipes();
+    //   const fetchRecipes = async () => {
+    //         const response = await fetch('http://127.0.0.1:8000/savedrecipes/', {
+    //             method: 'GET',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             }
+    //         });
 
-            if (response.ok) {
-                const response_json = await response.json()
-                const recipes_returned = response_json
-                setRecipes(recipes_returned)  // Set state variable to store list of recipes
-            } else {
-                null  // TODO: add error handling
-            }
-      }
+    //         if (response.ok) {
+    //             const response_json = await response.json()
+    //             const recipes_returned = response_json
+    //             setRecipes(recipes_returned)  // Set state variable to store list of recipes
+    //         } else {
+    //             null  // TODO: add error handling
+    //         }
+    //   }
 
-        fetchRecipes();  // Call the fetch recipes function
-    });
+    //     fetchRecipes();  // Call the fetch recipes function
+    }, []);
 
     return (
         <motion.div
@@ -65,9 +78,9 @@ const SavedRecipes = () => {
                     recipes.map((element, index) => (  // Map each recipe link to a RecipeCard component
                         <RecipeCard
                         key={index}  // Use the index as key (temp)
-                        title={element.name}  // Pass recipe info as props
-                        recipeLink={element.link}
-                        image={element.image}
+                        title={element.recipe_name}  // Pass recipe info as props
+                        recipeLink={element.recipe_link}
+                        image={element.recipe_image}
                         />
                     ))
                 }
